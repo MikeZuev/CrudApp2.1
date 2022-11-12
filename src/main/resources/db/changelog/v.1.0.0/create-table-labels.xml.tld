@@ -5,12 +5,15 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-    <changeSet id="create-table-person" author="uPagge">
-        <createTable tableName="person">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
+    <changeSet id="create-table-labels" author="Mike">
+        <createTable tableName="labels">
+            <column name="label_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="first_name" type="varchar(64)"/>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
         </createTable>
     </changeSet>
 
