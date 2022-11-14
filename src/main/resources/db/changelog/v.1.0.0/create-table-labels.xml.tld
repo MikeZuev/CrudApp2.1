@@ -13,6 +13,9 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="post_id" type="int">
+                <constraints nullable="false" foreignKeyName="labels_post_id_posts_id" references="posts(id)"/>
+            </column>
 
         </createTable>
     </changeSet>

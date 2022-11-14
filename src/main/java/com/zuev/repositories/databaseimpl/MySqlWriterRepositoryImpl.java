@@ -1,7 +1,5 @@
-package com.zuev.repositories.sqlimpl;
+package com.zuev.repositories.databaseimpl;
 
-import com.zuev.entities.Label;
-import com.zuev.entities.Post;
 import com.zuev.entities.Writer;
 import com.zuev.repositories.WriterRepository;
 

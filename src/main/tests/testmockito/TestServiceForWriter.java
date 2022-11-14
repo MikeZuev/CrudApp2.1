@@ -1,4 +1,4 @@
-package com.zuev.tests.testmockito;
+package tests.testmockito;
 
 import com.zuev.entities.Writer;
 import com.zuev.repositories.WriterRepository;

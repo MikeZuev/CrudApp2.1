@@ -1,6 +1,6 @@
-package com.zuev.tests.testjunit;
+package tests.testjunit;
 
-import com.zuev.repositories.sqlimpl.MySqlPostRepositoryImpl;
+import com.zuev.repositories.databaseimpl.MySqlPostRepositoryImpl;
 import org.junit.Test;
 
 

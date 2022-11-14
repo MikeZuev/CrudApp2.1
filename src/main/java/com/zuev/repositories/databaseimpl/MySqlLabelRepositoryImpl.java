@@ -1,51 +1,54 @@
-package com.zuev.repositories.sqlimpl;
+package com.zuev.repositories.databaseimpl;
 
-import com.mysql.cj.protocol.Resultset;
 import com.zuev.entities.Label;
-import com.zuev.entities.Post;
-import com.zuev.repositories.PostRepository;
+import com.zuev.repositories.LabelRepository;
 
 import java.sql.*;
-import java.sql.Date;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MySqlPostRepositoryImpl implements PostRepository {
+public class MySqlLabelRepositoryImpl implements LabelRepository {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/crudappdata";
 
+
+
+    public MySqlLabelRepositoryImpl() {
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
-    public Post getByld(Long aLong) {
-
-        List<Label> labels = new ArrayList<>();
-
-        Post newPost;
-        Label newLabel;
-
+    public Label getByld(Long aLong) {
+        Label labelById;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        String sql = null;
-        String content = null;
-        String name = null;
 
+        String sql = null;
+        int id;
+        String name = null;
         try {
-            sql = "select p.content, l.name\n" +
-                    "from posts p left join labels l on p.post_id = l.post_id " +
-                    "where p.post_id = ?";
+            sql = "select * from labels where label_id = ?";
+
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, aLong);
             ResultSet resultSet = preparedStatement.executeQuery(sql);
-            while(resultSet.next()){
-                content = resultSet.getString("content");
+            while (resultSet.next()){
+                id = resultSet.getInt("label_id");
                 name = resultSet.getString("name");
 
             }
@@ -69,101 +72,76 @@ public class MySqlPostRepositoryImpl implements PostRepository {
             }
         }
 
-        newLabel = new Label(name);
-        labels.add(newLabel);
 
-
-        return newPost = new Post(content, labels);
+        return labelById = new Label(name);
     }
 
     @Override
-    public List<Post> getAll() {
-        Map<Post, List<Label>> postsMap = new HashMap<>();
-        List<Post> posts = null;
-
-
+    public List<Label> getAll() {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+        List<Label> labels = new ArrayList<>();
+
+        Label newLabel = null;
 
         try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         String sql = null;
-
-
         try {
-            sql = "select p.id, p.content, p.created, p.updated, l.label_id, l.name " +
-                    "from posts p left join labels l on p.id = l.post_id";
+            sql = "select * from labels";
             preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery(sql);
-            while (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                String content = resultSet.getString("content");
-                Date created = resultSet.getDate("created");
-                Date updated = resultSet.getDate("updated");
-                long label_id = resultSet.getLong("label_id");
-                String name = resultSet.getString("name");
+            while(resultSet.next()){
+                newLabel = new Label();
+                newLabel.setId(resultSet.getInt("label_id"));
+                newLabel.setName(resultSet.getString("name"));
 
-                List<Label> labels = new ArrayList<>();
+                labels.add(newLabel);
 
-                Post newPost = new Post(id, content, created, updated, labels);
-
-                Label newLabel = new Label(label_id, name);
-
-                if (postsMap.containsKey(newPost)) {
-                    postsMap.get(newPost).add(newLabel);
-                } else {
-                    postsMap.put(newPost, labels);
-                    postsMap.get(newPost).add(newLabel);
-                }
-
-                posts = postsMap.entrySet().stream()
-                        .map(m -> {
-                            Post post = m.getKey();
-                            post.setLabels(m.getValue());
-                            return post;
-                        }).collect(Collectors.toList());
-
-                //    posts.add(new Post(post_id, content, created, updated));
 
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            if(preparedStatement!=null){
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(connection!=null){
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
 
-        return posts;
+        return labels;
     }
 
-
     @Override
-    public Post save(Post post) {
+    public Label save(Label label) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        String sql = null;
-
-
-
-
+        String sql;
 
         try {
-            sql = "insert into posts(content, created) values(?,?)";
+            sql = "insert into labels (name) values(?)";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, post.getContent());
-            Date date = Date.valueOf(java.time.LocalDate.now());
-
-            preparedStatement.setDate(2, date);
+            preparedStatement.setString(1, label.getName());
             preparedStatement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -174,6 +152,7 @@ public class MySqlPostRepositoryImpl implements PostRepository {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
             }
             if(connection != null){
                 try {
@@ -184,50 +163,33 @@ public class MySqlPostRepositoryImpl implements PostRepository {
             }
         }
 
-        return post;
+        return label;
     }
 
     @Override
-    public Post update(Post post) {
+    public Label update(Label label) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        String sql = null;
-
+        String sql;
 
         try {
-            sql = "update posts set content = ? where post_id = ?";
+            sql = "update labels set name = ? where label_id = ?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, post.getContent());
-            preparedStatement.setLong(2, post.getId());
+            preparedStatement.setString(1, label.getName());
+            preparedStatement.setLong(2, label.getId());
             preparedStatement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(connection != null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
         }
 
-
-        return post;
+        return label;
     }
 
     @Override
@@ -241,15 +203,17 @@ public class MySqlPostRepositoryImpl implements PostRepository {
             throw new RuntimeException(e);
         }
 
-        String sql = null;
+        String sql;
+
         try {
-            sql = "DELETE FROM posts WHERE post_id = ?;";
+            sql = "delete from labels where label_id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, aLong);
             preparedStatement.executeUpdate(sql);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally{
+        } finally {
             if(preparedStatement != null){
                 try {
                     preparedStatement.close();

@@ -2,10 +2,9 @@ package com.zuev.view;
 
 import com.zuev.controllers.WriterController;
 import com.zuev.entities.Writer;
-import com.zuev.repositories.sqlimpl.MySqlWriterRepositoryImpl;
+import com.zuev.repositories.databaseimpl.MySqlWriterRepositoryImpl;
 import com.zuev.services.impl.ServiceForWritersImpl;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class WriterView {

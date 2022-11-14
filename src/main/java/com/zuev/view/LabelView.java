@@ -2,7 +2,7 @@ package com.zuev.view;
 
 import com.zuev.controllers.LabelController;
 import com.zuev.entities.Label;
-import com.zuev.repositories.sqlimpl.MySqlLabelRepositoryImpl;
+import com.zuev.repositories.databaseimpl.MySqlLabelRepositoryImpl;
 import com.zuev.services.impl.ServiceForLabelsImpl;
 
 import java.util.Scanner;

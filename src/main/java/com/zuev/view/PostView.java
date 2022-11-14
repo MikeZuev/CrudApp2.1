@@ -1,11 +1,9 @@
 package com.zuev.view;
 
-import com.zuev.controllers.LabelController;
 import com.zuev.controllers.PostController;
 import com.zuev.entities.Label;
 import com.zuev.entities.Post;
-import com.zuev.repositories.sqlimpl.MySqlPostRepositoryImpl;
-import com.zuev.services.ServiceForPost;
+import com.zuev.repositories.databaseimpl.MySqlPostRepositoryImpl;
 import com.zuev.services.impl.ServiceForPostsImpl;
 
 import java.util.ArrayList;
