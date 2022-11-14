@@ -8,34 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySqlLabelRepositoryImpl implements LabelRepository {
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/crudappdata";
+
+
 
 
 
     public MySqlLabelRepositoryImpl() {
-        try {
 
-            Class.forName("com.mysql.jdbc.Driver");
-
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public Label getByld(Long aLong) {
+        Connection connection = ConnectionManager.open();
         Label labelById;
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
 
         String sql = null;
@@ -78,17 +66,13 @@ public class MySqlLabelRepositoryImpl implements LabelRepository {
 
     @Override
     public List<Label> getAll() {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
+
         PreparedStatement preparedStatement = null;
         List<Label> labels = new ArrayList<>();
 
         Label newLabel = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         String sql = null;
         try {
             sql = "select * from labels";
@@ -128,14 +112,11 @@ public class MySqlLabelRepositoryImpl implements LabelRepository {
 
     @Override
     public Label save(Label label) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
+
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         String sql;
 
         try {
@@ -168,14 +149,10 @@ public class MySqlLabelRepositoryImpl implements LabelRepository {
 
     @Override
     public Label update(Label label) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql;
 
@@ -194,14 +171,10 @@ public class MySqlLabelRepositoryImpl implements LabelRepository {
 
     @Override
     public void deleteByld(Long aLong) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql;
 

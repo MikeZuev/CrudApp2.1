@@ -8,22 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySqlWriterRepositoryImpl implements WriterRepository {
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/crudappdata";
+
     @Override
     public Writer getByld(Integer integer) {
         Writer writer = null;
 
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
 
@@ -54,14 +47,10 @@ public class MySqlWriterRepositoryImpl implements WriterRepository {
     public List<Writer> getAll() {
         List<Writer> writers = new ArrayList<>();
 
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
 
@@ -85,14 +74,10 @@ public class MySqlWriterRepositoryImpl implements WriterRepository {
 
     @Override
     public Writer save(Writer writer) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
         sql = "insert into writers (FirstName, LastName) values (?,?)";
@@ -111,14 +96,10 @@ public class MySqlWriterRepositoryImpl implements WriterRepository {
 
     @Override
     public Writer update(Writer writer) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
         try {
@@ -137,14 +118,10 @@ public class MySqlWriterRepositoryImpl implements WriterRepository {
 
     @Override
     public void deleteByld(Integer integer) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
 

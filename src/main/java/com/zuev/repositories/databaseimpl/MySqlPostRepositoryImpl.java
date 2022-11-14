@@ -10,27 +10,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MySqlPostRepositoryImpl implements PostRepository {
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/crudappdata";
+
 
     @Override
     public Post getByld(Long aLong) {
+        Connection connection = ConnectionManager.open();
 
         List<Label> labels = new ArrayList<>();
-
         Post newPost;
         Label newLabel;
 
-        Connection connection = null;
+
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
         String content = null;
@@ -81,14 +74,10 @@ public class MySqlPostRepositoryImpl implements PostRepository {
         List<Post> posts = null;
 
 
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
 
@@ -111,14 +100,10 @@ public class MySqlPostRepositoryImpl implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
 
@@ -158,14 +143,10 @@ public class MySqlPostRepositoryImpl implements PostRepository {
 
     @Override
     public Post update(Post post) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         String sql = null;
 
@@ -201,14 +182,9 @@ public class MySqlPostRepositoryImpl implements PostRepository {
 
     @Override
     public void deleteByld(Long aLong) {
-        Connection connection = null;
+        Connection connection = ConnectionManager.open();
         PreparedStatement preparedStatement = null;
 
-        try {
-            connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
         String sql = null;
         try {
