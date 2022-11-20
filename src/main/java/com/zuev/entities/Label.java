@@ -1,8 +1,17 @@
 package com.zuev.entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "labels")
 public class Label {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "label_id")
     private long id;
+
+    @Column(name = "name")
     private String name;
 
     public Label(){

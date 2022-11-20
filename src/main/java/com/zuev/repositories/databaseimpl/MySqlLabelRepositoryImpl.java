@@ -9,10 +9,6 @@ import java.util.List;
 
 public class MySqlLabelRepositoryImpl implements LabelRepository {
 
-
-
-
-
     public MySqlLabelRepositoryImpl() {
 
     }
